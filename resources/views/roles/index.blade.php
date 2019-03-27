@@ -1,0 +1,77 @@
+@extends('template.default')
+
+
+@section('content')
+
+    <div class="row">
+        <div class="pull-right">
+            @can('manage-roles')
+                <a class="btn btn-success" href="{{ route('roles.create') }}"> Create New Role</a>
+            @endcan
+        </div>
+    </div><br>
+    <div class="row">
+
+        <div class="span12">
+            <div class="widget ">
+                <div class="widget-header">
+                    <i class="icon-list"></i>
+                    <h3>Roles Management</h3>
+                </div> <!-- /widget-header -->
+                <div class="widget-content">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th width="280px">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($roles as $key => $role)
+                                <tr>
+                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $role->name }}</td>
+                                    <td>
+                                        <form id="action-form" action="{{ route('roles.destroy',$role->id) }}" method="POST">
+                                            <a class="btn btn-small btn-info" href="{{ route('roles.show',$role->id) }}"> <i class="icon-eye-open"></i></a>
+                                            @can('manage-roles')
+                                                <a class="btn btn-small btn-success" href="{{ route('roles.edit',$role->id) }}" ><i class="icon-edit"></i></a>
+                                            @endcan
+                                            @csrf
+                                            @method('DELETE')
+                                            @can('manage-roles')
+
+
+                                                <!--<a class="btn btn-small btn-danger" href="{{ route('roles.destroy',$role->id) }}"
+                                                   onclick="event.preventDefault();
+                                                     document.getElementById('action-form').submit();" ><i class="icon-trash"></i></a>-->
+
+
+                                            @endcan
+                                        </form>
+                                    </td>
+                                </tr>
+
+                            @endforeach
+
+                            </tbody>
+                        </table>
+                        <div class="span12">
+                        {!! $roles->render() !!}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+@endsection
